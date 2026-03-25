@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1019170688225",
+    "project_id": "drive--x",
+    "storage_bucket": "drive--x.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019170688225:android:cea24a420a2d6182aefba0",
+        "android_client_info": {
+          "package_name": "com.drivexproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDAGpzMvI8QVkxo17FRtuHD19juFXuAD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

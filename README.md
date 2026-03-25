@@ -1,97 +1,67 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# DriveX - Production-Ready Driver Delivery App
 
-# Getting Started
+Built with React Native 0.84, New Architecture (Fabric + TurboModules), and Firebase.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Prerequisites
+- Node 22.x+
+- JDK 17
+- Xcode 16+ (for iOS)
+- Android Studio Ladybug+ (for Android 15 support)
+- Firebase Account
 
-## Step 1: Start Metro
+## Getting Started
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+1. **Clone and Install**:
+   ```bash
+   npm install
+   cd ios && bundle exec pod install
+   ```
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+2. **Firebase Setup**:
+   - Create a Firebase project at [console.firebase.google.com](https://console.firebase.google.com).
+   - Enable **Auth** (Email/Password + Phone Verification).
+   - Create a **Firestore** database.
+   - Add an **Android App** and download `google-services.json` to `android/app/`.
+   - Add an **iOS App** and download `GoogleService-Info.plist` to `ios/DriveXProject/`.
 
-```sh
-# Using npm
-npm start
+3. **Environment Configuration**:
+   ```bash
+   cp .env.example .env
+   # Fill in your Firebase and Google Maps API keys
+   ```
 
-# OR using Yarn
-yarn start
+4. **Notifications Channel (Android)**:
+   The app automatically creates the `deliveries` channel on startup.
+
+5. **Running the App**:
+   - Android: `npx react-native run-android`
+   - iOS: `npx react-native run-ios`
+
+6. **Cloud Functions**:
+   ```bash
+   cd functions
+   npm install
+   npm run build
+   firebase deploy --only functions
+   ```
+
+## Troubleshooting
+- Ensure **New Architecture** is enabled (it is by default in 0.84 but check `gradle.properties`).
+- For **Location** issues, verify you've updated `Info.plist` and the Android Manifest (handled by `react-native-permissions`).
+- **Google Maps**: Make sure the API key has the "Directions API" and "Maps SDK for Android/iOS" enabled.
+
+## Security Rules (Firestore)
+Apply these rules in the Firebase Console:
+```javascript
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /deliveries/{docId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.driverId;
+    }
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}
 ```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
